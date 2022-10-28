@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using System;
 
 public class InputManager : MonoBehaviour
 {
@@ -9,6 +9,8 @@ public class InputManager : MonoBehaviour
     private static InputManager instance;
     private PlayerInput input;
 
+    public EventHandler on_spawn_pressed;
+   
     private void Awake()
     {
         if (instance != null)
@@ -22,6 +24,7 @@ public class InputManager : MonoBehaviour
 
     public void EnableInput(){
         input.Enable();
+        input.Keyboard.Spawn.performed += SpawnButtonPressed;
     }
     public void DisableInput(){
         input.Disable();
@@ -49,6 +52,11 @@ public class InputManager : MonoBehaviour
     private void OnDestroy(){
         
         input.Keyboard.Movement.performed -= MovePressed;
+    }
+
+    public void SpawnButtonPressed(InputAction.CallbackContext context)
+    {
+        on_spawn_pressed?.Invoke(this, EventArgs.Empty);
     }
 
 }

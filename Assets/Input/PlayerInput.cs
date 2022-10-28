@@ -35,6 +35,15 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Spawn"",
+                    ""type"": ""Button"",
+                    ""id"": ""536f4357-8e60-4187-934f-899129eee5c2"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -92,6 +101,17 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                     ""action"": ""Movement"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2959d701-92b2-4886-a358-01827ef37514"",
+                    ""path"": ""<Keyboard>/t"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Spawn"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -101,6 +121,7 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
         // Keyboard
         m_Keyboard = asset.FindActionMap("Keyboard", throwIfNotFound: true);
         m_Keyboard_Movement = m_Keyboard.FindAction("Movement", throwIfNotFound: true);
+        m_Keyboard_Spawn = m_Keyboard.FindAction("Spawn", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -161,11 +182,13 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Keyboard;
     private IKeyboardActions m_KeyboardActionsCallbackInterface;
     private readonly InputAction m_Keyboard_Movement;
+    private readonly InputAction m_Keyboard_Spawn;
     public struct KeyboardActions
     {
         private @PlayerInput m_Wrapper;
         public KeyboardActions(@PlayerInput wrapper) { m_Wrapper = wrapper; }
         public InputAction @Movement => m_Wrapper.m_Keyboard_Movement;
+        public InputAction @Spawn => m_Wrapper.m_Keyboard_Spawn;
         public InputActionMap Get() { return m_Wrapper.m_Keyboard; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -178,6 +201,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Movement.started -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
                 @Movement.performed -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
                 @Movement.canceled -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnMovement;
+                @Spawn.started -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnSpawn;
+                @Spawn.performed -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnSpawn;
+                @Spawn.canceled -= m_Wrapper.m_KeyboardActionsCallbackInterface.OnSpawn;
             }
             m_Wrapper.m_KeyboardActionsCallbackInterface = instance;
             if (instance != null)
@@ -185,6 +211,9 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
                 @Movement.started += instance.OnMovement;
                 @Movement.performed += instance.OnMovement;
                 @Movement.canceled += instance.OnMovement;
+                @Spawn.started += instance.OnSpawn;
+                @Spawn.performed += instance.OnSpawn;
+                @Spawn.canceled += instance.OnSpawn;
             }
         }
     }
@@ -192,5 +221,6 @@ public partial class @PlayerInput : IInputActionCollection2, IDisposable
     public interface IKeyboardActions
     {
         void OnMovement(InputAction.CallbackContext context);
+        void OnSpawn(InputAction.CallbackContext context);
     }
 }
