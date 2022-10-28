@@ -12,14 +12,25 @@ public class ShooterController : MonoBehaviour
 
     private float cooldown_timer;
 
+    [SerializeField] private bool can_shoot;
+
     private void Start() {
         
         RestartTimer();
     }
 
     private void Update() {
-        
-        Cooldown_timer();
+
+        /* if (!can_shoot) return;
+
+         Cooldown_timer();*/
+
+        if (can_shoot)
+        {
+            Cooldown_timer();
+        }
+
+        Debug.Log("Mi nave puede disparar cada: " + cooldown + " segundos");
     }
 
     private void Shoot()
@@ -29,7 +40,7 @@ public class ShooterController : MonoBehaviour
     }
     private void Cooldown_timer() {
        
-        if (cooldown_timer > 0) {
+        if (cooldown_timer >= 0) {
             
             cooldown_timer -= Time.deltaTime;
         }

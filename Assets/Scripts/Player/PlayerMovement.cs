@@ -3,11 +3,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     //Hola gente!
-  
+   
     //Aca declaramos la variable rigidbody que nos permite acceder a nuestro componente
     //que creamos en unity y nos permite controlar las fisicas de nuestra navecita
     private Rigidbody2D rb;
-
+    
     //Esta es una variable de tipo vector 2, es decir un par de numeros x e y, que siempre estan juntos
     //y son muy importante para posicionarnos en el mundo de nuestro juego 2d
     private Vector2 input_axis = Vector2.zero;
@@ -15,6 +15,9 @@ public class PlayerMovement : MonoBehaviour
     //Esta variable va a ser la que controle la velocidad de movimiento de nuestra nave, aca la declaramos pero
     //vamos a verla implimentada mas abajo
     [SerializeField] private float velocidadDeMovimiento = 10f;
+    [SerializeField] private float transformVelocidad;
+
+    public bool can_move;
 
     //Esto es un poco mas complejo: yo utilizo un sistema de input un poco mas avanzado, que consiste en crear una clase
     //llamada inputmanager donde creo funciones que me permiten acceder a los inputs de forma mas controlada. pueden entrar
@@ -33,11 +36,26 @@ public class PlayerMovement : MonoBehaviour
         
         rb = GetComponent<Rigidbody2D>();
     }
-    
+
+    private void Update()
+    {
+        if (!can_move) return;
+        
+        if (Input.GetKey(KeyCode.A))
+        {
+            transform.Translate(new Vector2(-transformVelocidad, 0) * Time.deltaTime);
+        }
+        else if (Input.GetKey(KeyCode.D))
+        {
+            transform.Translate(new Vector2(transformVelocidad, 0) * Time.deltaTime);
+        }
+        else return;
+    }
+
     //Como estamos moviendo nuestra nave a través de físicas, ponemos nuestra variable dentro del FIXED UPDATE
     private void FixedUpdate(){
 
-        PassAxisValueToVelocity();
+        //PassAxisValueToVelocity();
     }
 
     //Acá creo una función, una función es un pedazo de código que podemos reutilizar todo el tiempo y que cumple una función 

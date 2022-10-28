@@ -49,11 +49,6 @@ public class InputManager : MonoBehaviour
         input.Keyboard.Movement.performed += MovePressed;
     }
 
-    private void OnDestroy(){
-        
-        input.Keyboard.Movement.performed -= MovePressed;
-    }
-
     public void SpawnButtonPressed(InputAction.CallbackContext context)
     {
         on_spawn_pressed?.Invoke(this, EventArgs.Empty);
